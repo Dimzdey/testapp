@@ -1,0 +1,59 @@
+<form [formGroup]="form" (ngSubmit)="createUser(form.value)"
+   class="d-flex justify-content-between" *ngIf="!addFormVisible">
+  <div class="form-group">
+    <label for="firstname">First Name</label>
+    <input type="text" class="form-control" id="firstname"
+      placeholder="First Name" formControlName="firstname">
+  </div>
+  <div class="form-group">
+    <label for="lastname">Last Name</label>
+    <input type="text" class="form-control" id="lastname"
+      placeholder="Last Name" formControlName="lastname">
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="text" class="form-control" id="email"
+      placeholder="Email" formControlName="email">
+  </div>
+  <div class="row">
+    <button class="btn btn-success" [disabled]="!form.valid"
+      type="submit">Add</button>
+  </div>
+</form>
+
+<div class="row">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>
+          <button class="btn btn-default" (click)="addFormVisible = !addFormVisible">
+            Add New Row</button>
+        </th>
+      </tr>
+    </thead>
+    <tbody *ngIf="users">
+      <tr *ngFor="let user of users; let i = index"
+        [ngClass]="{'table-danger': user.firstname == 'Danger', 
+                  'table-success':  user.firstname == 'Success',
+                  'table-active': user.firstname == 'Active',
+                  'table-warning': user.firstname == 'Warning',
+                  'table-info': user.firstname == 'Info' }">
+        <td>{{user.firstname}}</td>
+        <td>{{user.lastname}}</td>
+        <td>{{user.email}}</td>
+        <td class="d-flex justify-content-end">
+          <button type="button" class="btn btn-primary">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="btn btn-primary"
+            (click)="deleteUser(user._id)">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
