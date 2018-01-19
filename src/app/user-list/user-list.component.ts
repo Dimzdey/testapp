@@ -10,7 +10,8 @@ export class UserListComponent implements OnInit {
 
     users;
     addFormVisible = true;
-
+    edit = false;
+    userId: string;
     form: FormGroup;
 
     constructor(private _userService: ApiService, private fb: FormBuilder) {
@@ -41,23 +42,38 @@ export class UserListComponent implements OnInit {
         });
     }
 
-    updateUser(id, user) {
-        this._userService.updateUser(id, user).subscribe(data => {
-            console.log(data);
-            this.getUsers();
-        });
+    updateUser($event) {
+        $event.preventDefault();
+        if (this.form.valid) {
+            this._userService.updateUser(this.userId, this.form.value).subscribe(data => {
+                console.log(data);
+                this.edit = false;
+                this.addFormVisible = true;
+                this.form.reset();
+                this.getUsers();
+            });
+        }
     }
+
+
 
     createUser(user) {
-        console.log(user);
-        this._userService.createUser(user).subscribe(data => {
-            console.log(data);
-            this.getUsers();
-        });
+        if (this.form.valid) {
+            this._userService.createUser(user).subscribe(data => {
+                console.log(data);
+                this.form.reset();
+                this.getUsers();
+            });
+        }
+
     }
 
-    onRowClick($event: any, id) {
-        console.log($event.target.outerText, id);
+    editUser(user) {
+        this.form.controls['firstname'].setValue(user.firstname);
+        this.form.controls['lastname'].setValue(user.lastname);
+        this.form.controls['email'].setValue(user.email);
+        this.addFormVisible = false;
+        this.edit = true;
     }
 
 }
