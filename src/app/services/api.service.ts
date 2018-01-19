@@ -24,6 +24,7 @@ export class ApiService {
 
   createUser(user) {
     return this.http.post('/api/user', user, httpOptions);
-  }
+  }  
+  
 
 }
